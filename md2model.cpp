@@ -335,8 +335,9 @@ void md2model::Animate (int animation, float dt)
 	if (interp == 0.0f)
 		memcpy(animVerts,vertData[currentFrame],vertDataSize*sizeof(float));
 	else {
-		for (int i=0;i<vertDataSize;i++)
-			animVerts[i] = vertData[currentFrame][i] + interp*(vertData[nextFrame][i] - vertData[currentFrame][i]);
+		for (int i = 0; i < vertDataSize; i++) {
+			animVerts[i] = vertData[currentFrame][i] + interp * (vertData[nextFrame][i] - vertData[currentFrame][i]);
+		}
 	}
 }
 

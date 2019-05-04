@@ -7,7 +7,7 @@ class Player
 public:
 	Player()
 	{
-		mesh[1] = tmpModel.ReadMD2Model("hayden-tris.MD2");
+		mesh[1] = tmpModel.ReadMD2Model("Res/Objects/hayden-tris.MD2");
 		md2VertCount = tmpModel.getVertDataCount();
 
 	}
@@ -17,6 +17,7 @@ public:
 	{
 		tmpModel.Animate(currentAnim, 0.15);
 		rt3d::updateMesh(mesh[1], RT3D_VERTEX, tmpModel.getAnimVerts(), tmpModel.getVertDataSize());
+		std::cout << std::endl;
 	}
 	void draw()
 	{

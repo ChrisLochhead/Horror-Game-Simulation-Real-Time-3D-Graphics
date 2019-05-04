@@ -90,7 +90,7 @@ public:
 
 private:
 
-	glm::vec3 playerPosition;
+	glm::vec3 playerPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 	int scaleSetter = 0;
 	int direction = 0; 
 

@@ -7,7 +7,7 @@ class Enemy
 public:
 	Enemy()
 	{
-		mesh[1] = enemyModel.ReadMD2Model("hueteotl.MD2");
+		mesh[1] = enemyModel.ReadMD2Model("Res/Objects/hueteotl.MD2");
 		md2VertCount = enemyModel.getVertDataCount();
 
 	}

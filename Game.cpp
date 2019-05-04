@@ -459,10 +459,10 @@ void Game::drawCoins() {
 void Game::renderMap()
 {
 
-	drawCoins();
+	//drawCoins();
 	renderGarden();
-	renderHouse();
-	buildColliders();
+	//renderHouse();
+	//buildColliders();
 
 }
 void Game::renderGarden()
@@ -482,77 +482,78 @@ void Game::renderGarden()
 			camera->pop();
 		}
 	}
-	for (int a = -5; a < 15; a++) {
-		for (int b = 0; b < 20; b++) {
-
-			camera->pushBack(camera->getTop());
-			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0)+(-30.0))));
-			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
-			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-			cube->draw();
-			camera->pop();
-		}
-	}
-
-	//draw garden -- right hand path -- grass
-	for (int a = 7; a < 10; a++) {
-		for (int b = 0; b < 7; b++) {
-			camera->pushBack(camera->getTop());
-			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0))));
-			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
-			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-			cube->draw();
-			camera->pop();
-		}
-	}
-	//draw garden -- centre path -- dirt road
-	glBindTexture(GL_TEXTURE_2D, textures[12]); // dirt texture
-	for (int a = 4; a < 6; a++) {
-		for (int b = 0; b < 7; b++) {
-			camera->pushBack(camera->getTop());
-			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0))));
-			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
-			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-			cube->draw();
-			camera->pop();
-		}
-	}
-	//draw garden -- outer walls -- brick wall -- back wall
-	glBindTexture(GL_TEXTURE_2D, textures[4]);// brick wall texture
-	for (int a = 0; a < 10; a++) {
-		camera->pushBack(camera->getTop());
-		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-		camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, 1.1f, -1.0)));
-		camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-		cube->draw();
-		camera->pop();
-
-	}
-	//draw garden -- outer walls -- brick wall -- left wall
-	for (int a = 0; a < 4; a++) {
-		camera->pushBack(camera->getTop());
-		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-		camera->setTop(glm::translate(camera->getTop(), glm::vec3(-1.0f, (a*-2.0f), -1.0)));
-		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.1f, 1.0f, 1.0f)));
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-		cube->draw();
-		camera->pop();
-
-	}
-	//draw garden -- outer walls -- brick wall -- right wall
-	for (int a = 0; a < 4; a++) {
-		camera->pushBack(camera->getTop());
-		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-		camera->setTop(glm::translate(camera->getTop(), glm::vec3(10.0f, (a*-2.0f), -1.0)));
-		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.1f, 1.0f, 1.0f)));
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-		cube->draw();
-		camera->pop();
-
-	}
 }
+//	for (int a = -5; a < 15; a++) {
+//		for (int b = 0; b < 20; b++) {
+//
+//			camera->pushBack(camera->getTop());
+//			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0)+(-30.0))));
+//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
+//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//			cube->draw();
+//			camera->pop();
+//		}
+//	}
+//
+//	//draw garden -- right hand path -- grass
+//	for (int a = 7; a < 10; a++) {
+//		for (int b = 0; b < 7; b++) {
+//			camera->pushBack(camera->getTop());
+//			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0))));
+//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
+//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//			cube->draw();
+//			camera->pop();
+//		}
+//	}
+//	//draw garden -- centre path -- dirt road
+//	glBindTexture(GL_TEXTURE_2D, textures[12]); // dirt texture
+//	for (int a = 4; a < 6; a++) {
+//		for (int b = 0; b < 7; b++) {
+//			camera->pushBack(camera->getTop());
+//			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0))));
+//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
+//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//			cube->draw();
+//			camera->pop();
+//		}
+//	}
+//	//draw garden -- outer walls -- brick wall -- back wall
+//	glBindTexture(GL_TEXTURE_2D, textures[4]);// brick wall texture
+//	for (int a = 0; a < 10; a++) {
+//		camera->pushBack(camera->getTop());
+//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
+//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, 1.1f, -1.0)));
+//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
+//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//		cube->draw();
+//		camera->pop();
+//
+//	}
+//	//draw garden -- outer walls -- brick wall -- left wall
+//	for (int a = 0; a < 4; a++) {
+//		camera->pushBack(camera->getTop());
+//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
+//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(-1.0f, (a*-2.0f), -1.0)));
+//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
+//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.1f, 1.0f, 1.0f)));
+//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//		cube->draw();
+//		camera->pop();
+//
+//	}
+//	//draw garden -- outer walls -- brick wall -- right wall
+//	for (int a = 0; a < 4; a++) {
+//		camera->pushBack(camera->getTop());
+//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
+//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(10.0f, (a*-2.0f), -1.0)));
+//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.1f, 1.0f, 1.0f)));
+//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//		cube->draw();
+//		camera->pop();
+//
+//	}
+//}
 void Game::renderHouse()
 {
 
@@ -1209,7 +1210,7 @@ void Game::render() {
 		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
 		cube->setTranslate(glm::vec3(1.0f + forwardMove, 0.8f, 5.0f + rightMove));
 		camera->setTop(glm::translate(camera->getTop(), glm::vec3(1.0 + forwardMove, 0.8, 5.0 + rightMove)));
-		playerPosition = glm::vec3(1.0 + forwardMove, 0.8, 5.0 + rightMove); // set player position for automatic doors
+		playerPosition = glm::vec3(0.0 + forwardMove, 0.0, 0.0 + rightMove); // set player position for automatic doors
 		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(-1.0f, 0.0f, 0.0f)));
 		camera->setTop(glm::rotate(camera->getTop(), float(turn*DEG_TO_RADIAN), glm::vec3(0.0f, 0.0f, -1.0f)));
 		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.03, 0.03, 0.03)));

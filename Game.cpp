@@ -14,6 +14,8 @@
 
 using namespace std;
 
+float testValue = 0.0f;
+
 SDL_Window * Game::Window(SDL_GLContext &context) {
 	//SDL_Window * window;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) // Initialize video
@@ -253,7 +255,7 @@ GLuint Game::textToTexture(const char * str, GLuint textID, Uint8 r, Uint8 g, Ui
 void Game::drawItem(glm::vec3 pos, glm::vec3 scale, float rot, glm::vec3 rotDegree) {
 	camera->pushBack(camera->getTop());
 	camera->setTop(glm::scale(camera->getTop(), scale));
-	camera->setTop(glm::rotate(camera->getTop(), rot, rotDegree));
+	camera->setTop(glm::rotate(camera->getTop(), float(rot * DEG_TO_RADIAN), rotDegree));
 	camera->setTop(glm::translate(camera->getTop(), pos));
 	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 	cube->draw();
@@ -325,6 +327,8 @@ void Game::update(void) {
 		if (keys[SDL_SCANCODE_PERIOD]) r -= 0.1f, xTurn -= 2.0f;
 		if (keys[SDL_SCANCODE_K])  yTurn += 0.2f;
 		if (keys[SDL_SCANCODE_L])  yTurn -= 0.2f;
+		if (keys[SDL_SCANCODE_O])  testValue -= 5.0f;
+		if (keys[SDL_SCANCODE_P])  testValue += 5.0f;
 	}
 	else {
 		player->setCurrentAnim(0);
@@ -470,57 +474,25 @@ void Game::renderHouse()
 
 	glBindTexture(GL_TEXTURE_2D, textures[14]); // door texture
 		// back door, open and closed states
-	if (Score == 3) {
+	if (Score != 3)
 		// closed
 		drawItem(glm::vec3(4.5, 0.5, -29.5/0.1), glm::vec3(1.0, 1.0, 0.1));
-	}
-	else {
+	else
 		//openstate
-		//camera->pushBack(camera->getTop());
-		//camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f))); // rotate to open
-		drawItem(glm::vec3(0.5f, 4.5, -29.5 / 0.1), glm::vec3(1.0, 1.0, 0.1), 90, glm::vec3(0.0, 0.0, 1.0));
+		drawItem(glm::vec3(4.5/0.1, 0.5, -29.5), glm::vec3(0.1, 1.0, 1.0));
 
+	//front door, open and closed states
+	if (playerPosition.x > 3 && playerPosition.x < 10)
+		//open state
+		drawItem(glm::vec3(4 / 0.1, 0.3, -7.0), glm::vec3(0.1, 1.0, 1.0));
+	else
+		//closed state
+		drawItem(glm::vec3(5, 0.3, -6.5/0.1), glm::vec3(1.0, 1.0, 0.1));
 
+	//front left hand side of house
+	glBindTexture(GL_TEXTURE_2D, textures[2]); //house wall texture
+	drawItem(glm::vec3(0.0, 0.3, -6.5 / 0.1), glm::vec3(4.0, 1.0, 0.1));
 	}
-}
-//
-//	//front door, open and closed states
-//	if (playerPosition.x > 3 && playerPosition.x < 10) {
-//		//open state
-//		camera->pushBack(camera->getTop());
-//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
-//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.1f, 1.2f, 0.1f)));
-//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(5.625f, 1.0f, 40.5f)));
-//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//		cube->draw();
-//		camera->pop();
-//
-//	}
-//	else {
-//		//closed state
-//		camera->pushBack(camera->getTop());
-//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.1f, 1.2f, 0.1f)));
-//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(4.625f, 1.0f, -70.0f)));
-//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//		cube->draw();
-//		camera->pop();
-//
-//
-//	}
-//
-//	glBindTexture(GL_TEXTURE_2D, textures[2]); //house wall texture
-//	//front of house, left hand side
-//	for (int a = 0; a < 2; a++) {
-//		for (int b = 0; b < 10; b++) {
-//			camera->pushBack(camera->getTop());
-//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.275f, 0.2f, 0.1f)));
-//			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a * 2.0f + 0.125, b*1.2f, -70.0f)));
-//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//			cube->draw();
-//
-//			camera->pop();
-//		}
-//	}
 //
 //	//draw bed objects
 //	{

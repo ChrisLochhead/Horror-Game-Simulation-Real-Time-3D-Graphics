@@ -1,13 +1,10 @@
 #include "CoinCollider.h"
 
-void CoinCollider::setScale(glm::vec3 newScale, int scaleSetter)
+void CoinCollider::setScale(glm::vec3 newScale)
 {
-	if (scaleSetter == 0) {
 		halfWidth *= newScale.x;
 		halfHeight *= newScale.y;
 		halfLength *= newScale.z;
-	}
-
 }
 void CoinCollider::setTranslate(glm::vec3 newPosition)
 {

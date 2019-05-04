@@ -1,13 +1,10 @@
 #include "DoorCollider.h"
 
-void DoorCollider::setScale(glm::vec3 newScale, int scaleSetter)
+void DoorCollider::setScale(glm::vec3 newScale)
 {
-	if (scaleSetter == 0) {
 		halfWidth *= newScale.x;
 		halfHeight *= newScale.y;
 		halfLength *= newScale.z;
-	}
-
 }
 void DoorCollider::setTranslate(glm::vec3 newPosition)
 {

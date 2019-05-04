@@ -1,14 +1,12 @@
 #include "WallCollider.h"
 
-void WallCollider::setScale(glm::vec3 newScale, int scaleSetter)
+void WallCollider::setScale(glm::vec3 newScale)
 {
-	if (scaleSetter == 0) {
 		halfWidth *= newScale.x;
 		halfHeight *= newScale.y;
 		halfLength *= newScale.z;
-	}
-
 }
+
 void WallCollider::setTranslate(glm::vec3 newPosition)
 {
 	centre.x = newPosition.x;

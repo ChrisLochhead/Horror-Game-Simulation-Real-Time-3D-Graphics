@@ -14,7 +14,7 @@
 
 using namespace std;
 
-float testValue = -25.00005 / 13;
+float testValue = 0.0;
 
 SDL_Window * Game::Window(SDL_GLContext &context) {
 	//SDL_Window * window;
@@ -55,18 +55,18 @@ GLuint Game::loadBitmap(char *fname, bool istrue) {
 
 	// bind texture and set parameters
 	glBindTexture(GL_TEXTURE_2D, texID);
-	//if (istrue == true) {
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	//}
-	//else {
+	if (istrue == true) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+	else {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	//}
+	}
 
 	SDL_PixelFormat *format = tmpSurface->format;
 
@@ -336,8 +336,8 @@ void Game::update(void) {
 		if (keys[SDL_SCANCODE_PERIOD]) r -= 0.1f, xTurn -= 2.0f;
 		if (keys[SDL_SCANCODE_K])  yTurn += 0.2f;
 		if (keys[SDL_SCANCODE_L])  yTurn -= 0.2f;
-		if (keys[SDL_SCANCODE_O])  testValue -= 0.005f;
-		if (keys[SDL_SCANCODE_P])  testValue += 0.005f;
+		if (keys[SDL_SCANCODE_O])  testValue -= 0.05f;
+		if (keys[SDL_SCANCODE_P])  testValue += 0.05f;
 	}
 	else {
 		player->setCurrentAnim(0);
@@ -376,69 +376,70 @@ void Game::drawSkyBox()
 
 }
 void Game::drawCoins() {
-	//draw coins
-	coinAngle += 0.5;
-	camera->pushBack(camera->getTop());
-	camera->setTop(glm::translate(camera->getTop(), glm::vec3(2.0f, 0.75f, -15.0)));
-	camera->setTop(glm::rotate(camera->getTop(), float(coinAngle*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
-	camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.0025f, 0.0025f, 0.0025f)));
-	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-	coin[0]->draw();
-	camera->pop();
+	////draw coins
+	//coinAngle += 0.5;
+	//camera->pushBack(camera->getTop());
+	//camera->setTop(glm::translate(camera->getTop(), glm::vec3(2.0f, 0.75f, -15.0)));
+	//camera->setTop(glm::rotate(camera->getTop(), float(coinAngle*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
+	//camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.0025f, 0.0025f, 0.0025f)));
+	//rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	//coin[0]->draw();
+	//camera->pop();
 
-	//coin collider
-	rt3d::setMaterial(mvpShaderProgram, materialTransparent->getMaterial());
-	camera->pushBack(camera->getTop());
-	camera->setTop(glm::translate(camera->getTop(), glm::vec3(2.0f, 0.75f, -15.0f)));
-	camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.3, 1.0, 0.3)));
-	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-	//collider[0]->draw();
-	collider[0]->setTranslate(glm::vec3(15.0f, 0.8f, -2.0f));
-	collider[0]->setScale(glm::vec3(0.3, 1.0, 0.3), scaleSetter);
-	collisionObjs.push_back(collider[0]);
-	camera->pop();
+	////coin collider
+	//rt3d::setMaterial(mvpShaderProgram, materialTransparent->getMaterial());
+	//camera->pushBack(camera->getTop());
+	//camera->setTop(glm::translate(camera->getTop(), glm::vec3(2.0f, 0.75f, -15.0f)));
+	//camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.3, 1.0, 0.3)));
+	//rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	////collider[0]->draw();
+	//collider[0]->setTranslate(glm::vec3(15.0f, 0.8f, -2.0f));
+	//collider[0]->setScale(glm::vec3(0.3, 1.0, 0.3), scaleSetter);
+	//collisionObjs.push_back(collider[0]);
+	//camera->pop();
 
-	//coin 2
-	camera->pushBack(camera->getTop());
-	camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -15.0)));
-	camera->setTop(glm::rotate(camera->getTop(), float(coinAngle*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
-	camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.0025f, 0.0025f, 0.0025f)));
-	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-	coin[1]->draw();
-	camera->pop();
+	////coin 2
+	//camera->pushBack(camera->getTop());
+	//camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -15.0)));
+	//camera->setTop(glm::rotate(camera->getTop(), float(coinAngle*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
+	//camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.0025f, 0.0025f, 0.0025f)));
+	//rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	//coin[1]->draw();
+	//camera->pop();
 
-	//coin collider
-	rt3d::setMaterial(mvpShaderProgram, materialTransparent->getMaterial());
-	camera->pushBack(camera->getTop());
-	camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -15.0f)));
-	camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.3, 1.0, 0.3)));
-	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-	//collider[1]->draw();
-	collider[1]->setTranslate(glm::vec3(15.0f, 0.8f, -9.0f));
-	collider[1]->setScale(glm::vec3(0.3, 1.0, 0.3), scaleSetter);
-	collisionObjs.push_back(collider[1]);
-	camera->pop();
+	////coin collider
+	//rt3d::setMaterial(mvpShaderProgram, materialTransparent->getMaterial());
+	//camera->pushBack(camera->getTop());
+	//camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -15.0f)));
+	//camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.3, 1.0, 0.3)));
+	//rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	////collider[1]->draw();
+	//collider[1]->setTranslate(glm::vec3(15.0f, 0.8f, -9.0f));
+	//collider[1]->setScale(glm::vec3(0.3, 1.0, 0.3), scaleSetter);
+	//collisionObjs.push_back(collider[1]);
+	//camera->pop();
 
-	//coin 3
-	camera->pushBack(camera->getTop());
-	camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -21.0)));
-	camera->setTop(glm::rotate(camera->getTop(), float(coinAngle*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
-	camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.0025f, 0.0025f, 0.0025f)));
-	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-	coin[2]->draw();
-	camera->pop();
+	////coin 3
+	//camera->pushBack(camera->getTop());
+	//camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -21.0)));
+	//camera->setTop(glm::rotate(camera->getTop(), float(coinAngle*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
+	//camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.0025f, 0.0025f, 0.0025f)));
+	//rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	//coin[2]->draw();
+	//camera->pop();
 
-	//coin collider
-	rt3d::setMaterial(mvpShaderProgram, materialTransparent->getMaterial());
-	camera->pushBack(camera->getTop());
-	camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -21.0f)));
-	camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.3, 1.0, 0.3)));
-	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-	//collider[2]->draw();
-	collider[2]->setTranslate(glm::vec3(21.0f, 0.8f, -9.0f));
-	collider[2]->setScale(glm::vec3(0.3, 1.0, 0.3), scaleSetter);
-	collisionObjs.push_back(collider[2]);
-	camera->pop();
+	////coin collider
+	//rt3d::setMaterial(mvpShaderProgram, materialTransparent->getMaterial());
+	//camera->pushBack(camera->getTop());
+	//camera->setTop(glm::translate(camera->getTop(), glm::vec3(9.0f, 0.75f, -21.0f)));
+	//camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.3, 1.0, 0.3)));
+	//rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	////collider[2]->draw();
+	//collider[2]->setTranslate(glm::vec3(21.0f, 0.8f, -9.0f));
+	//if(scaleSetter == 0)
+	//collider[2]->setScale(glm::vec3(0.3, 1.0, 0.3));
+	//collisionObjs.push_back(collider[2]);
+	//camera->pop();
 
 
 }
@@ -448,7 +449,7 @@ void Game::renderMap()
 //	drawCoins();
 	renderGarden();
 	renderHouse();
-//	buildColliders();
+	//buildColliders();
 
 }
 void Game::renderGarden()
@@ -478,25 +479,36 @@ void Game::renderGarden()
 	drawItem(glm::vec3(0.5, -0.7f/0.1, -50.0/20), glm::vec3(15.0f, 0.1f, 20.0f));
 }
 
+void Game::setCollider(glm::vec3 pos, glm::vec3 scale, bool condition) {
+	door->setTranslate(pos);// z = -x, y doesnt matter
+	if (scaleSetter == 0) {
+		door->setScale(scale);
+	}
+	if(condition == false)
+		collisionObjs.push_back(door);
+}
 void Game::renderHouse()
 {
 
 	glBindTexture(GL_TEXTURE_2D, textures[14]); // door texture
 		// back door, open and closed states
-	if (Score != 3)
+	if (Score != 3) {
 		// closed
-		drawItem(glm::vec3(5, 0.3, -30/0.1), glm::vec3(1.0, 1.0, 0.1));
-	else
-		//openstate
-		drawItem(glm::vec3(4.5/0.1, 0.5, -29.5), glm::vec3(0.1, 1.0, 1.0));
+		drawItem(glm::vec3(5, 0.3, -30 / 0.1), glm::vec3(1.0, 1.0, 0.1));
+		setCollider(glm::vec3(5, 0.3, -30), glm::vec3(1.0, 1.0, 0.1));
+	}
+	else {		//openstate
+		drawItem(glm::vec3(4.5 / 0.1, 0.5, -29.5), glm::vec3(0.1, 1.0, 1.0));
+	}
 
 	//front door, open and closed states
 	if (playerPosition.x > 3 && playerPosition.x < 10)
 		//open state
 		drawItem(glm::vec3(4 / 0.1, 0.3, -7.0), glm::vec3(0.1, 1.0, 1.0));
-	else
-		//closed state
-		drawItem(glm::vec3(5, 0.3, -6.5/0.1), glm::vec3(1.0, 1.0, 0.1));
+	else {		//closed state
+		drawItem(glm::vec3(5, 0.3, -6.5 / 0.1), glm::vec3(1.0, 1.0, 0.1));
+		setCollider(glm::vec3(5, 0.3, -6.5), glm::vec3(1.0, 1.0, 0.1));
+	}
 
 	glBindTexture(GL_TEXTURE_2D, textures[2]); //house wall texture
 	//front left hand side of house
@@ -522,7 +534,7 @@ void Game::renderHouse()
 	drawItem(glm::vec3(30, 0.3, -10.5), glm::vec3(0.1, 2.5, 1.75));
 
 	//right hand side of house
-	drawItem(glm::vec3(-4.5 / 0.5, 0.3, -1.54), glm::vec3(0.5, 2.5, 11.75));
+	drawItem(glm::vec3(25.6, 0.3, -1.54), glm::vec3(0.5, 2.5, 11.75));
 
 	//right hand interior walls 
 	drawItem(glm::vec3(70, 0.3, -16), glm::vec3(0.1, 2.5, 1.75));
@@ -530,6 +542,8 @@ void Game::renderHouse()
 	drawItem(glm::vec3(70, 0.3, -10.5), glm::vec3(0.1, 2.5, 1.75));
 
 	//floor
+	glBindTexture(GL_TEXTURE_2D, textures[3]);
+	drawItem(glm::vec3(4.2/9.0, -2.65, -18.45/12), glm::vec3(9.0, 0.5, 12));
 
 	//beds
 	glBindTexture(GL_TEXTURE_2D, textures[0]);
@@ -537,214 +551,180 @@ void Game::renderHouse()
 	drawItem(glm::vec3(-1700.0f + 0.125, -4000.2f, -70.0f), glm::vec3(0.00575f, 0.005f, 0.01f), 0, glm::vec3(0.0, 0.0, 0.0), 1);
 	}
 
-
-//	//inside house, floor
-//	glBindTexture(GL_TEXTURE_2D, textures[3]);
-//	for (int a = 0; a < 14; a++) {
-//		for (int b = 0; b < 4; b++) {
-//			camera->pushBack(camera->getTop());
-//			camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-//
-//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.75f, 1.275f, 0.1f)));
-//			if (a == 13) {
-//				camera->setTop(glm::translate(camera->getTop(), glm::vec3(b * 1.75, (a * -1.225f) - 6.5f, 0.5f)));
-//			}
-//			else {
-//				camera->setTop(glm::translate(camera->getTop(), glm::vec3(b * 1.75, (a*-1.275) - 6.5f, 0.5f)));
-//			}
-//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//			cube->draw();
-//			camera->pop();
-//		}
-//	}
-//
-
 void Game::buildColliders() {
 
-	//door collider
-	{
-		camera->pushBack(camera->getTop());
-		door->setTranslate(glm::vec3(30.75f, 0.8f, -5.0f));// z = -x, y doesnt matter
-		door->setScale(glm::vec3(1.0, 1.0, 0.3), scaleSetter);
-		if (gameWon != true)
-		{
-			collisionObjs.push_back(door);
-		}
-		camera->pop();
-	}
-
-	//garden wall colliders
-	{
-
-		camera->pushBack(camera->getTop());
-		wall[10]->setTranslate(glm::vec3(0.0f, 0.8f, -10.0f));
-		wall[10]->setScale(glm::vec3(3.5, 1.0, 0.3), scaleSetter);
-		collisionObjs.push_back(wall[10]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[11]->setTranslate(glm::vec3(3.5f, 0.8f, 1.5f));
-		wall[11]->setScale(glm::vec3(2.0, 1.0, 0.3), scaleSetter);
-		collisionObjs.push_back(wall[11]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[12]->setTranslate(glm::vec3(-1.5f, 0.8f, -5.25f));
-		wall[12]->setScale(glm::vec3(0.3, 1.0, 7.0), scaleSetter);
-		collisionObjs.push_back(wall[12]);
-		camera->pop();
-	}
-	//draw front of house colliders
-	{
-
-		//front left
-		camera->pushBack(camera->getTop());
-
-		wall[0]->setTranslate(glm::vec3(7.0f, 0.8f, 0.0f));
-		wall[0]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-
-		//wall[0]->setTranslate(glm::vec3(6.0f, 0.8f, -0.25f));
-		//wall[0]->setScale(glm::vec3(0.3, 1.0, 2.5), scaleSetter);
-
-		collisionObjs.push_back(wall[0]);
-		camera->pop();
-
-
-		//front right
-		camera->pushBack(camera->getTop());
-
-		wall[1]->setTranslate(glm::vec3(7.0f, 0.8f, -10.0f));
-		wall[1]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-
-		//wall[1]->setTranslate(glm::vec3(6.0f, 0.8f, -8.5f));
-		//wall[1]->setScale(glm::vec3(0.3, 1.0, 1.9), scaleSetter);
-
-		collisionObjs.push_back(wall[1]);
-		camera->pop();
-
-	}
-	//right hand side wall colliders horizontal
-	{
-
-		camera->pushBack(camera->getTop());
-		wall[2]->setTranslate(glm::vec3(12.75f, 0.8f, -11.0f));// z = -x, y doesnt matter
-		wall[2]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[2]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[3]->setTranslate(glm::vec3(18.75f, 0.8f, -11.0f));
-		wall[3]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[3]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[4]->setTranslate(glm::vec3(24.75f, 0.8f, -11.0f));
-		wall[4]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[4]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[5]->setTranslate(glm::vec3(30.25f, 0.8f, -11.0f));
-		wall[5]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[5]);
-		camera->pop();
-	}
-	//left hand side wall colliders horizontal
-	{
-		camera->pushBack(camera->getTop());
-		wall[6]->setTranslate(glm::vec3(12.25f, 0.8f, 0.75f));
-		wall[6]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[6]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[7]->setTranslate(glm::vec3(18.5f, 0.8f, 0.25f));
-		wall[7]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[7]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[8]->setTranslate(glm::vec3(24.75f, 0.8f, 0.25f));
-		wall[8]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
-		collisionObjs.push_back(wall[8]);
-		camera->pop();
-
-	}
-	// left hand side outer wall collider
-	{
-		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
-		camera->pushBack(camera->getTop());
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-		wall[23]->draw();
-		wall[23]->setTranslate(glm::vec3(3.0f, 0.8f, 1.5f));
-		wall[23]->setScale(glm::vec3(30.5, 0.2, 0.1), scaleSetter);
-		collisionObjs.push_back(wall[23]);
-		camera->pop();
-
-	}
-
-	//right hand side outer wall collider
-	{
-		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
-		camera->pushBack(camera->getTop());
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-		wall[14]->draw();
-		wall[14]->setTranslate(glm::vec3(3.0f, 0.8f, -11.5f));
-		wall[14]->setScale(glm::vec3(30.5, 1.0, 0.3), scaleSetter);
-		collisionObjs.push_back(wall[14]);
-		camera->pop();
-	}
-	//left hand side inner wall colliders
-	{
-		camera->pushBack(camera->getTop());
-		wall[16]->setTranslate(glm::vec3(11.0f, 0.8f, -3.0f));
-		wall[16]->setScale(glm::vec3(2.4f, 0.5f, 0.001), scaleSetter);
-		collisionObjs.push_back(wall[16]);
-		camera->pop();
-
-
-		camera->pushBack(camera->getTop());
-		wall[17]->setTranslate(glm::vec3(18.5f, 0.8f, -2.75f));
-		wall[17]->setScale(glm::vec3(1.0f, 1.0f, 0.000175f), scaleSetter);
-		collisionObjs.push_back(wall[17]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[18]->setTranslate(glm::vec3(23.5f, 0.8f, -2.75f));
-		wall[18]->setScale(glm::vec3(1.3f, 1.0f, 0.000175f), scaleSetter);
-		collisionObjs.push_back(wall[18]);
-		camera->pop();
-	}
-	//right hand side inner wall colliders
-	{
-
-		camera->pushBack(camera->getTop());
-		wall[22]->setTranslate(glm::vec3(9.0f, 0.8f, -7.0f));
-		wall[22]->setScale(glm::vec3(0.75, 1.0, 0.000175), scaleSetter);
-		collisionObjs.push_back(wall[22]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[21]->setTranslate(glm::vec3(13.5f, 0.8f, -7.0f));
-		wall[21]->setScale(glm::vec3(1.3f, 1.0, 0.000175), scaleSetter);
-		collisionObjs.push_back(wall[21]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[20]->setTranslate(glm::vec3(18.5f, 0.8f, -7.0f));
-		wall[20]->setScale(glm::vec3(1.2, 1.0, 0.000175), scaleSetter);
-		collisionObjs.push_back(wall[20]);
-		camera->pop();
-
-		camera->pushBack(camera->getTop());
-		wall[19]->setTranslate(glm::vec3(28.0f, 0.8f, -7.0f));
-		wall[19]->setScale(glm::vec3(-3.3, 1.0, -0.000175), scaleSetter);
-		collisionObjs.push_back(wall[19]);
-		camera->pop();
-	}
-
-}
+//	//garden wall colliders
+//	{
+//
+//		camera->pushBack(camera->getTop());
+//		wall[10]->setTranslate(glm::vec3(0.0f, 0.8f, -10.0f));
+//		wall[10]->setScale(glm::vec3(3.5, 1.0, 0.3), scaleSetter);
+//		collisionObjs.push_back(wall[10]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[11]->setTranslate(glm::vec3(3.5f, 0.8f, 1.5f));
+//		wall[11]->setScale(glm::vec3(2.0, 1.0, 0.3), scaleSetter);
+//		collisionObjs.push_back(wall[11]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[12]->setTranslate(glm::vec3(-1.5f, 0.8f, -5.25f));
+//		wall[12]->setScale(glm::vec3(0.3, 1.0, 7.0), scaleSetter);
+//		collisionObjs.push_back(wall[12]);
+//		camera->pop();
+//	}
+//	//draw front of house colliders
+//	{
+//
+//		//front left
+//		camera->pushBack(camera->getTop());
+//
+//		wall[0]->setTranslate(glm::vec3(7.0f, 0.8f, 0.0f));
+//		wall[0]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//
+//		//wall[0]->setTranslate(glm::vec3(6.0f, 0.8f, -0.25f));
+//		//wall[0]->setScale(glm::vec3(0.3, 1.0, 2.5), scaleSetter);
+//
+//		collisionObjs.push_back(wall[0]);
+//		camera->pop();
+//
+//
+//		//front right
+//		camera->pushBack(camera->getTop());
+//
+//		wall[1]->setTranslate(glm::vec3(7.0f, 0.8f, -10.0f));
+//		wall[1]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//
+//		//wall[1]->setTranslate(glm::vec3(6.0f, 0.8f, -8.5f));
+//		//wall[1]->setScale(glm::vec3(0.3, 1.0, 1.9), scaleSetter);
+//
+//		collisionObjs.push_back(wall[1]);
+//		camera->pop();
+//
+//	}
+//	//right hand side wall colliders horizontal
+//	{
+//
+//		camera->pushBack(camera->getTop());
+//		wall[2]->setTranslate(glm::vec3(12.75f, 0.8f, -11.0f));// z = -x, y doesnt matter
+//		wall[2]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[2]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[3]->setTranslate(glm::vec3(18.75f, 0.8f, -11.0f));
+//		wall[3]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[3]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[4]->setTranslate(glm::vec3(24.75f, 0.8f, -11.0f));
+//		wall[4]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[4]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[5]->setTranslate(glm::vec3(30.25f, 0.8f, -11.0f));
+//		wall[5]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[5]);
+//		camera->pop();
+//	}
+//	//left hand side wall colliders horizontal
+//	{
+//		camera->pushBack(camera->getTop());
+//		wall[6]->setTranslate(glm::vec3(12.25f, 0.8f, 0.75f));
+//		wall[6]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[6]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[7]->setTranslate(glm::vec3(18.5f, 0.8f, 0.25f));
+//		wall[7]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[7]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[8]->setTranslate(glm::vec3(24.75f, 0.8f, 0.25f));
+//		wall[8]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
+//		collisionObjs.push_back(wall[8]);
+//		camera->pop();
+//
+//	}
+//	// left hand side outer wall collider
+//	{
+//		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
+//		camera->pushBack(camera->getTop());
+//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//		wall[23]->draw();
+//		wall[23]->setTranslate(glm::vec3(3.0f, 0.8f, 1.5f));
+//		wall[23]->setScale(glm::vec3(30.5, 0.2, 0.1), scaleSetter);
+//		collisionObjs.push_back(wall[23]);
+//		camera->pop();
+//
+//	}
+//
+//	//right hand side outer wall collider
+//	{
+//		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
+//		camera->pushBack(camera->getTop());
+//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+//		wall[14]->draw();
+//		wall[14]->setTranslate(glm::vec3(3.0f, 0.8f, -11.5f));
+//		wall[14]->setScale(glm::vec3(30.5, 1.0, 0.3), scaleSetter);
+//		collisionObjs.push_back(wall[14]);
+//		camera->pop();
+//	}
+//	//left hand side inner wall colliders
+//	{
+//		camera->pushBack(camera->getTop());
+//		wall[16]->setTranslate(glm::vec3(11.0f, 0.8f, -3.0f));
+//		wall[16]->setScale(glm::vec3(2.4f, 0.5f, 0.001), scaleSetter);
+//		collisionObjs.push_back(wall[16]);
+//		camera->pop();
+//
+//
+//		camera->pushBack(camera->getTop());
+//		wall[17]->setTranslate(glm::vec3(18.5f, 0.8f, -2.75f));
+//		wall[17]->setScale(glm::vec3(1.0f, 1.0f, 0.000175f), scaleSetter);
+//		collisionObjs.push_back(wall[17]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[18]->setTranslate(glm::vec3(23.5f, 0.8f, -2.75f));
+//		wall[18]->setScale(glm::vec3(1.3f, 1.0f, 0.000175f), scaleSetter);
+//		collisionObjs.push_back(wall[18]);
+//		camera->pop();
+//	}
+//	//right hand side inner wall colliders
+//	{
+//
+//		camera->pushBack(camera->getTop());
+//		wall[22]->setTranslate(glm::vec3(9.0f, 0.8f, -7.0f));
+//		wall[22]->setScale(glm::vec3(0.75, 1.0, 0.000175), scaleSetter);
+//		collisionObjs.push_back(wall[22]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[21]->setTranslate(glm::vec3(13.5f, 0.8f, -7.0f));
+//		wall[21]->setScale(glm::vec3(1.3f, 1.0, 0.000175), scaleSetter);
+//		collisionObjs.push_back(wall[21]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[20]->setTranslate(glm::vec3(18.5f, 0.8f, -7.0f));
+//		wall[20]->setScale(glm::vec3(1.2, 1.0, 0.000175), scaleSetter);
+//		collisionObjs.push_back(wall[20]);
+//		camera->pop();
+//
+//		camera->pushBack(camera->getTop());
+//		wall[19]->setTranslate(glm::vec3(28.0f, 0.8f, -7.0f));
+//		wall[19]->setScale(glm::vec3(-3.3, 1.0, -0.000175), scaleSetter);
+//		collisionObjs.push_back(wall[19]);
+//		camera->pop();
+//	}
+//
+//}
 void Game::render() {
 
 	if (playerPosition.x >= 30.0f) {

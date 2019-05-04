@@ -1,13 +1,10 @@
 #include "EnemyCollider.h"
 
-void EnemyCollider::setScale(glm::vec3 newScale, int scaleSetter)
+void EnemyCollider::setScale(glm::vec3 newScale)
 {
-	if (scaleSetter == 0) {
 		halfWidth *= newScale.x;
 		halfHeight *= newScale.y;
 		halfLength *= newScale.z;
-	}
-
 }
 void EnemyCollider::setTranslate(glm::vec3 newPosition)
 {

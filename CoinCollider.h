@@ -18,7 +18,7 @@ public:
 
 	void draw() { rt3d::drawIndexedMesh(cubeMesh[0], meshIndexCount, GL_TRIANGLES); }
 
-	void setScale(glm::vec3 newScale, int scaleSetter);
+	void setScale(glm::vec3 newScale);
 
 	void setTranslate(glm::vec3 newPosition);
 

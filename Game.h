@@ -139,7 +139,8 @@ private:
 	glm::vec3 eyeVector;
 	GLfloat forwardMove = 0.0f;
 	GLfloat rightMove = 0.0f;
-	GLfloat turn = 0.0f;  // for moving the player
+	GLfloat xTurn = 0.0f;  // for moving the player
+	GLfloat yTurn = 0.0f;
 
 	GLfloat enemyForwardMove = 0.0f;
 	GLfloat enemyRightMove = 0.0f;

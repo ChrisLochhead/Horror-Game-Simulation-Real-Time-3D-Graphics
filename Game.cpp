@@ -1,4 +1,3 @@
-
 #if _DEBUG
 #pragma comment(linker, "/subsystem:\"console\" /entry:\"WinMainCRTStartup\"")
 #endif
@@ -54,18 +53,18 @@ GLuint Game::loadBitmap(char *fname, bool istrue) {
 
 	// bind texture and set parameters
 	glBindTexture(GL_TEXTURE_2D, texID);
-	if (istrue == true) {
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	}
-	else {
+	//if (istrue == true) {
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_CLAMP_TO_EDGE);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_CLAMP_TO_EDGE);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//}
+	//else {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	}
+	//}
 
 	SDL_PixelFormat *format = tmpSurface->format;
 
@@ -148,7 +147,7 @@ void Game::init(void) {
 	textures[2] = loadBitmap("Res/Objects/DampWoodIndividual.bmp", false);
 	textures[3] = loadBitmap("Res/Objects/WoodenFloor.bmp", false);
 	textures[4] = loadBitmap("Res/Objects/BrickWall.bmp", false);
-	textures[5] = loadBitmap("Res/Objects/Grass.bmp", true);
+	textures[5] = loadBitmap("Res/Objects/Grass.bmp", false);
 	textures[6] = loadBitmap("Res/SkyBox/mnight_ft.bmp", true);
 	textures[7] = loadBitmap("Res/SkyBox/mnight_bk.bmp", true);
 	textures[8] = loadBitmap("Res/SkyBox/mnight_dn.bmp", true);
@@ -187,8 +186,8 @@ void Game::init(void) {
 	tmp = camera->getTop()*light->getLightPos();
 
 	float r_new = r - 180;
-	glm::vec3 vec_offset = {std::cos(r_new), 1.5f, -std::sin(r_new)};
-	at = { playerPosition.z, playerPosition.y, playerPosition.x };
+	glm::vec3 vec_offset = { std::cos(r_new), 1.5f, -std::sin(r_new) };
+	at = { playerPosition.z, playerPosition.y + 2.0, playerPosition.x };
 	eye = at + vec_offset;
 	camera->setTop(glm::lookAt(eye, at, up));
 	drawSkyBox();
@@ -252,25 +251,25 @@ GLuint Game::textToTexture(const char * str, GLuint textID, Uint8 r, Uint8 g, Ui
 }
 void Game::update(void) {
 	//if the game isnt over
-	if (gameExit != true && 
+	if (gameExit != true &&
 		gameLost != true) {
 
 		const	Uint8 *keys = SDL_GetKeyboardState(NULL);
 		if (keys[SDL_SCANCODE_W]) {
 
 			//turn forward
-			at = moveForward(at, r, 0.1f), forwardMove += 0.1;
+			at = moveForward(at, r+yTurn, 0.1f), forwardMove += 0.1;
 			player->setCurrentAnim(1);
 			playSound(samples[1]);
 			direction = 1;
-			turn = 0.0f;
+			xTurn = 0.0f;
 
 		}
 		else if (keys[SDL_SCANCODE_S]) {
 
-			//turn back
-			at = moveForward(at, r, -0.1f), forwardMove -= 0.1;
-			turn = -180.0f;
+			//xTurn back
+			at = moveForward(at, r + yTurn, -0.1f), forwardMove -= 0.1;
+			xTurn = -180.0f;
 			player->setCurrentAnim(1);
 			playSound(samples[1]);
 			direction = 2;
@@ -278,24 +277,24 @@ void Game::update(void) {
 		}
 		else if (keys[SDL_SCANCODE_A]) {
 
-			//turn left
-			at = moveRight(at, r, -0.1f), rightMove -= 0.1;
-			turn = -90.0f;
+			//xTurn left
+			at = moveRight(at, r + yTurn, -0.1f), rightMove -= 0.1;
+			xTurn = -90.0f;
 			player->setCurrentAnim(1);
 			playSound(samples[1]);
 			direction = 3;
-	
+
 
 		}
 		else if (keys[SDL_SCANCODE_D]) {
 
-			//turn right
-			at = moveRight(at, r, 0.1f); rightMove += 0.1;
-			turn = 90.0f;
+			//xTurn right
+			at = moveRight(at, r + yTurn, 0.1f); rightMove += 0.1;
+			xTurn = 90.0f;
 			player->setCurrentAnim(1);
 			playSound(samples[1]);
 			direction = 4;
-		
+
 
 
 		}
@@ -305,14 +304,16 @@ void Game::update(void) {
 			playing = false;
 			samples[1]->playSound(0.0);
 			player->setCurrentAnim(0);
-			
+
 
 		}
 		if (keys[SDL_SCANCODE_R]) eye.y += 0.1;
 		if (keys[SDL_SCANCODE_F]) eye.y -= 0.1;
 
-		if (keys[SDL_SCANCODE_COMMA]) r += 0.1f, turn += 2.0f;
-		if (keys[SDL_SCANCODE_PERIOD]) r -= 0.1f, turn -= 2.0f;
+		if (keys[SDL_SCANCODE_COMMA]) r += 0.1f, xTurn += 2.0f;
+		if (keys[SDL_SCANCODE_PERIOD]) r -= 0.1f, xTurn -= 2.0f;
+		if (keys[SDL_SCANCODE_K])  yTurn += 0.2f;
+		if (keys[SDL_SCANCODE_L])  yTurn -= 0.2f;
 	}
 	else {
 		player->setCurrentAnim(0);
@@ -453,45 +454,46 @@ void Game::drawCoins() {
 	collider[2]->setScale(glm::vec3(0.3, 1.0, 0.3), scaleSetter);
 	collisionObjs.push_back(collider[2]);
 	camera->pop();
-	
+
 
 }
 void Game::renderMap()
 {
 
-	//drawCoins();
+//	drawCoins();
 	renderGarden();
-	//renderHouse();
-	//buildColliders();
+//	renderHouse();
+//	buildColliders();
+	std::cout << std::endl;
 
 }
 void Game::renderGarden()
 {
 	// draw garden -- left hand path -- grass
-	glBindTexture(GL_TEXTURE_2D, textures[13]); // grass texture
+	//glBindTexture(GL_TEXTURE_2D, textures[13]); // grass texture
 	rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
 	glBindTexture(GL_TEXTURE_2D, textures[5]); // grass texture
-	for (int a = 0; a < 4; a++) {
-		for (int b = 0; b < 7; b++) {
+	//for (int a = 0; a < 4; a++) {
+	//	for (int b = 0; b < 7; b++) {
 
-			camera->pushBack(camera->getTop());
-			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0))));
-			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
-			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-			cube->draw();
-			camera->pop();
-		}
-	}
-}
+	camera->pushBack(camera->getTop());
+	camera->setTop(glm::translate(camera->getTop(), glm::vec3(0.0f, -1.0f, (0.0))));
+	camera->setTop(glm::scale(camera->getTop(), glm::vec3(4.0f, 0.1f, 7.0f)));
+	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	cube->draw();
+	camera->pop();
+	//	}
+	//}
 //	for (int a = -5; a < 15; a++) {
 //		for (int b = 0; b < 20; b++) {
 //
-//			camera->pushBack(camera->getTop());
-//			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a*1.0f, -0.1f, b*(-1.0)+(-30.0))));
-//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.0f, 0.1f, 1.0f)));
-//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//			cube->draw();
-//			camera->pop();
+	camera->pushBack(camera->getTop());
+	camera->setTop(glm::translate(camera->getTop(), glm::vec3(-5.0f, -1.0f, 0.0f + (-30.0))));
+	camera->setTop(glm::scale(camera->getTop(), glm::vec3(15.0f, 0.1f, 20.0f)));
+	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	cube->draw();
+	camera->pop();
+}
 //		}
 //	}
 //
@@ -634,7 +636,7 @@ void Game::renderHouse()
 		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 		rt3d::drawMesh(meshObjects[2], mVertCount, GL_TRIANGLES);
 		camera->pop();
-		
+
 		camera->pushBack(camera->getTop());
 		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
 		camera->setTop(glm::rotate(camera->getTop(), float(180 * DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
@@ -771,7 +773,7 @@ void Game::renderHouse()
 						rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 						cube->draw();
 					}
-					camera->pop();
+				camera->pop();
 			}
 		}
 	}
@@ -808,7 +810,7 @@ void Game::renderHouse()
 						rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 						cube->draw();
 					}
-					camera->pop();
+				camera->pop();
 			}
 		}
 	}
@@ -820,7 +822,7 @@ void Game::renderHouse()
 			camera->pushBack(camera->getTop());
 			if (a == 1 || a == 3 || a == 5) {
 				camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.275f, 1.2f, 0.1f)));
-				camera->setTop(glm::translate(camera->getTop(), glm::vec3(4.2f + 1.875, 1.0f, (a*-25.0f) - 70.0f))); 
+				camera->setTop(glm::translate(camera->getTop(), glm::vec3(4.2f + 1.875, 1.0f, (a*-25.0f) - 70.0f)));
 				rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 			}
 			door->draw();
@@ -940,7 +942,7 @@ void Game::renderHouse()
 			camera->pushBack(camera->getTop());
 			if (a == 1 || a == 3 || a == 5) { // removed 7
 				camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.275f, 1.2f, 0.1f)));
-				camera->setTop(glm::translate(camera->getTop(), glm::vec3(4.2f + 1.875, 1.0f, (a*-25.0f) - 70.0f)));  
+				camera->setTop(glm::translate(camera->getTop(), glm::vec3(4.2f + 1.875, 1.0f, (a*-25.0f) - 70.0f)));
 				rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 
 			}
@@ -970,14 +972,16 @@ void Game::buildColliders() {
 		camera->pushBack(camera->getTop());
 		door->setTranslate(glm::vec3(30.75f, 0.8f, -5.0f));// z = -x, y doesnt matter
 		door->setScale(glm::vec3(1.0, 1.0, 0.3), scaleSetter);
-		if (gameWon != true) 
-	    { collisionObjs.push_back(door); }
+		if (gameWon != true)
+		{
+			collisionObjs.push_back(door);
+		}
 		camera->pop();
 	}
 
 	//garden wall colliders
 	{
-	
+
 		camera->pushBack(camera->getTop());
 		wall[10]->setTranslate(glm::vec3(0.0f, 0.8f, -10.0f));
 		wall[10]->setScale(glm::vec3(3.5, 1.0, 0.3), scaleSetter);
@@ -989,7 +993,7 @@ void Game::buildColliders() {
 		wall[11]->setScale(glm::vec3(2.0, 1.0, 0.3), scaleSetter);
 		collisionObjs.push_back(wall[11]);
 		camera->pop();
-	
+
 		camera->pushBack(camera->getTop());
 		wall[12]->setTranslate(glm::vec3(-1.5f, 0.8f, -5.25f));
 		wall[12]->setScale(glm::vec3(0.3, 1.0, 7.0), scaleSetter);
@@ -998,7 +1002,7 @@ void Game::buildColliders() {
 	}
 	//draw front of house colliders
 	{
-		
+
 		//front left
 		camera->pushBack(camera->getTop());
 
@@ -1023,11 +1027,11 @@ void Game::buildColliders() {
 
 		collisionObjs.push_back(wall[1]);
 		camera->pop();
-		
+
 	}
 	//right hand side wall colliders horizontal
 	{
-		
+
 		camera->pushBack(camera->getTop());
 		wall[2]->setTranslate(glm::vec3(12.75f, 0.8f, -11.0f));// z = -x, y doesnt matter
 		wall[2]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
@@ -1065,13 +1069,13 @@ void Game::buildColliders() {
 		wall[7]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
 		collisionObjs.push_back(wall[7]);
 		camera->pop();
-		
+
 		camera->pushBack(camera->getTop());
 		wall[8]->setTranslate(glm::vec3(24.75f, 0.8f, 0.25f));
 		wall[8]->setScale(glm::vec3(0.1, 0.2, 2.5), scaleSetter);
 		collisionObjs.push_back(wall[8]);
 		camera->pop();
-		
+
 	}
 	// left hand side outer wall collider
 	{
@@ -1083,9 +1087,9 @@ void Game::buildColliders() {
 		wall[23]->setScale(glm::vec3(30.5, 0.2, 0.1), scaleSetter);
 		collisionObjs.push_back(wall[23]);
 		camera->pop();
-		
+
 	}
-	
+
 	//right hand side outer wall collider
 	{
 		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
@@ -1101,10 +1105,10 @@ void Game::buildColliders() {
 	{
 		camera->pushBack(camera->getTop());
 		wall[16]->setTranslate(glm::vec3(11.0f, 0.8f, -3.0f));
-		wall[16]->setScale(glm::vec3( 2.4f, 0.5f, 0.001), scaleSetter);
+		wall[16]->setScale(glm::vec3(2.4f, 0.5f, 0.001), scaleSetter);
 		collisionObjs.push_back(wall[16]);
 		camera->pop();
-		
+
 
 		camera->pushBack(camera->getTop());
 		wall[17]->setTranslate(glm::vec3(18.5f, 0.8f, -2.75f));
@@ -1132,7 +1136,7 @@ void Game::buildColliders() {
 		wall[21]->setScale(glm::vec3(1.3f, 1.0, 0.000175), scaleSetter);
 		collisionObjs.push_back(wall[21]);
 		camera->pop();
-		
+
 		camera->pushBack(camera->getTop());
 		wall[20]->setTranslate(glm::vec3(18.5f, 0.8f, -7.0f));
 		wall[20]->setScale(glm::vec3(1.2, 1.0, 0.000175), scaleSetter);
@@ -1157,46 +1161,46 @@ void Game::render() {
 		gameWon = true;
 	}
 	//set up window for rendering and initialise camera and lighting
-		glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(mvpShaderProgram);
-		light = new Light(1);
+	glUseProgram(mvpShaderProgram);
+	light = new Light(1);
 
-		rt3d::setLight(mvpShaderProgram, light->getLight());
-		rt3d::setMaterial(mvpShaderProgram, material->getMaterial());
+	rt3d::setLight(mvpShaderProgram, light->getLight());
+	rt3d::setMaterial(mvpShaderProgram, material->getMaterial());
 
-		glm::vec4 tmp = camera->getTop()*light->getLightPos();
-		rt3d::setLightPos(mvpShaderProgram, glm::value_ptr(tmp));
+	glm::vec4 tmp = camera->getTop()*light->getLightPos();
+	rt3d::setLightPos(mvpShaderProgram, glm::value_ptr(tmp));
 
-		camera->pushModelview();
+	camera->pushModelview();
 
-		projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 1400.0f / 800.0f, 1.0f, 500.0f);
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "projection", glm::value_ptr(projection));
+	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 1400.0f / 800.0f, 1.0f, 500.0f);
+	rt3d::setUniformMatrix4fv(mvpShaderProgram, "projection", glm::value_ptr(projection));
 
-		glm::mat4 modelview(1.0); // set base position for scene
-		camera->pushModelview();
-		tmp = camera->getTop()*light->getLightPos();
+	glm::mat4 modelview(1.0); // set base position for scene
+	camera->pushModelview();
+	tmp = camera->getTop()*light->getLightPos();
 
-		float r_new = (90-r) - 180;
-		glm::vec3 vec_offset = { -std::cos(r_new)*-2.5, 1.5f, std::sin(r_new)*-2.5 };
-		at = { playerPosition.z, playerPosition.y, -playerPosition.x };
-		eye = at + vec_offset;
+	float r_new = (90 - r) - 180;
+	glm::vec3 vec_offset = { -std::cos(r_new) * (-2.0), 2.0f, std::sin(r_new)* (-2.0) };
+	at = { playerPosition.z, playerPosition.y + yTurn, -playerPosition.x };
+	eye = at + vec_offset;
 
-		camera->setTop(glm::lookAt(eye, at, up));
-		drawSkyBox();
+	camera->setTop(glm::lookAt(eye, at, up));
+	drawSkyBox();
 
-		glDepthMask(GL_TRUE); // make sure depth test is on
-		glUseProgram(mvpShaderProgram);
+	glDepthMask(GL_TRUE); // make sure depth test is on
+	glUseProgram(mvpShaderProgram);
 
-		projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 1400.0f / 800.0f, 1.0f, 500.0f);
-		rt3d::setUniformMatrix4fv(mvpShaderProgram, "projection", glm::value_ptr(projection));
+	projection = glm::perspective(float(60.0f*DEG_TO_RADIAN), 1400.0f / 800.0f, 1.0f, 500.0f);
+	rt3d::setUniformMatrix4fv(mvpShaderProgram, "projection", glm::value_ptr(projection));
 
-		rt3d::setLightPos(mvpShaderProgram, glm::value_ptr(tmp));
-		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
-		glBindTexture(GL_TEXTURE_2D, textures[12]);
-		camera->pop();
-		renderMap();
+	rt3d::setLightPos(mvpShaderProgram, glm::value_ptr(tmp));
+	rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
+	glBindTexture(GL_TEXTURE_2D, textures[12]);
+	camera->pop();
+	renderMap();
 
 	rt3d::materialStruct tmpMaterial = materialDark->getMaterial();
 	rt3d::materialStruct transparentMaterial = materialTransparent->getMaterial();
@@ -1209,10 +1213,11 @@ void Game::render() {
 		camera->pushBack(camera->getTop());
 		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
 		cube->setTranslate(glm::vec3(1.0f + forwardMove, 0.8f, 5.0f + rightMove));
-		camera->setTop(glm::translate(camera->getTop(), glm::vec3(1.0 + forwardMove, 0.8, 5.0 + rightMove)));
+		camera->setTop(glm::translate(camera->getTop(), glm::vec3(0.0 + forwardMove, 0.0, 0.0 + rightMove)));
 		playerPosition = glm::vec3(0.0 + forwardMove, 0.0, 0.0 + rightMove); // set player position for automatic doors
 		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(-1.0f, 0.0f, 0.0f)));
-		camera->setTop(glm::rotate(camera->getTop(), float(turn*DEG_TO_RADIAN), glm::vec3(0.0f, 0.0f, -1.0f)));
+		camera->setTop(glm::rotate(camera->getTop(), float(xTurn*DEG_TO_RADIAN), glm::vec3(0.0f, 0.0f, -1.0f)));
+		//camera->setTop(glm::rotate(camera->getTop(), float(yTurn*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
 		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.03, 0.03, 0.03)));
 		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 		player->draw();
@@ -1232,20 +1237,20 @@ void Game::render() {
 	//draw the enemy
 	if (Score == 3)
 	{
-		
+
 		glBindTexture(GL_TEXTURE_2D, textures[1]);
 		enemy->setCurrentAnim(1);
 		enemy->animate();
 		camera->pushBack(camera->getTop());
-		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f))); 
-		camera->setTop(glm::translate(camera->getTop(), glm::vec3(1.0f + enemyForwardMove, 0.8f, 5.0f + enemyRightMove))); 
+		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
+		camera->setTop(glm::translate(camera->getTop(), glm::vec3(1.0f + enemyForwardMove, 0.8f, 5.0f + enemyRightMove)));
 		camera->setTop(glm::rotate(camera->getTop(), float(90.0f*DEG_TO_RADIAN), glm::vec3(-1.0f, 0.0f, 0.0f)));
 		camera->setTop(glm::rotate(camera->getTop(), float(DEG_TO_RADIAN), glm::vec3(0.0f, 0.0f, -1.0f)));
 		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.03, 0.03, 0.03)));
 		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
 		enemy->draw();
 		camera->pop();
-		
+
 		// enemy collider
 		camera->pushBack(camera->getTop());
 		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
@@ -1255,14 +1260,14 @@ void Game::render() {
 		camera->pop();
 
 		enemyForwardMove += 0.1;
-		
-		
+
+
 	}
 	glDepthMask(GL_TRUE);
 
 	//initialise labels
 	{
-		stringstream score;       // turns the score from an int into a char*
+		stringstream score;       // xTurns the score from an int into a char*
 		score << Score;
 		string scoreString = score.str();
 		char* scoreText = (char*)scoreString.c_str();
@@ -1443,7 +1448,7 @@ bool Game::checkCollision(CollisionEntity* cube1, CollisionEntity* cube2, int po
 		return false;
 	}
 
-	
+
 	return true;
 }
 void Game::hideCoin(int position)

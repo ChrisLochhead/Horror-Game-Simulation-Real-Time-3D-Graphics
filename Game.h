@@ -86,7 +86,9 @@ public:
 
 	void hideCoin(int position); // hides coin from view and disables collision
 
+	void drawItem(glm::vec3 pos, glm::vec3 scale, float rotation = 0.0f, glm::vec3 rotDegree = glm::vec3 (1.0f, 1.0f, 1.0f));
 	
+	void drawSkyBox(glm::vec3 pos, glm::vec3 scale, int texture, float rot = 0.0f , glm::vec3 rotDegree = glm::vec3(1.0f, 1.0f, 1.0f));
 
 private:
 

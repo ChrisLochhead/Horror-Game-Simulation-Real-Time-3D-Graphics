@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Colliders">
+      <UniqueIdentifier>{a3ac9ff9-ce7c-4640-9b1b-05ba23199ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{b9a8d9dc-16b3-4830-8fb5-5bc23095c6cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model Stuff">
+      <UniqueIdentifier>{eb18425e-3e42-4e9c-aba4-26defede95c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Model Stuff\Models">
+      <UniqueIdentifier>{5f3bea29-d5f3-4db7-b77d-e22f35767dbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lighting &amp; Visual">
+      <UniqueIdentifier>{ed17875e-cd0e-421e-9358-48cd318e7790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model Stuff">
+      <UniqueIdentifier>{5876282f-93a7-4a9e-b02d-eebfc6afcd2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Colliders">
+      <UniqueIdentifier>{8dc136cb-4bd1-4064-b038-211b19045e6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game &amp; Miscellaneous">
+      <UniqueIdentifier>{339c9af0-cefd-484d-b12c-598ee65eb9c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="md2model.cpp">
+      <Filter>Source Files\Model Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="rt3d.cpp">
+      <Filter>Source Files\Model Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="rt3dObjLoader.cpp">
+      <Filter>Source Files\Model Stuff</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="DoorCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="WallCollider.cpp">
+      <Filter>Source Files\Colliders</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source Files\Game &amp; Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Game &amp; Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Game &amp; Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Game &amp; Miscellaneous</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Cube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Bass.h">
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="anorms.h">
+      <Filter>Header Files\Model Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Bed.h">
+      <Filter>Header Files\Model Stuff\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files\Model Stuff\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Model Stuff\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Model Stuff\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEntity.h">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinCollider.h">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyCollider.h">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="WallCollider.h">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+    <ClInclude Include="rt3dObjLoader.h">
+      <Filter>Header Files\Model Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="rt3d.h">
+      <Filter>Header Files\Model Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>Header Files\Model Stuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Lighting &amp; Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files\Lighting &amp; Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Lighting &amp; Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorCollider.h">
+      <Filter>Header Files\Colliders</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="phong-tex.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="phong-tex.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\..\3D Graphics Programming Project v2\SDL Test\SDL Test\NoLight.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\..\..\3D Graphics Programming Project v2\SDL Test\SDL Test\NoLight.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

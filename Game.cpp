@@ -252,13 +252,22 @@ GLuint Game::textToTexture(const char * str, GLuint textID, Uint8 r, Uint8 g, Ui
 	return texture;
 }
 
-void Game::drawItem(glm::vec3 pos, glm::vec3 scale, float rot, glm::vec3 rotDegree) {
+void Game::drawItem(glm::vec3 pos, glm::vec3 scale, float rot, glm::vec3 rotDegree, int itemType) {
 	camera->pushBack(camera->getTop());
+	if (itemType == 1) {
+		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
+		camera->setTop(glm::rotate(camera->getTop(), float(180 * DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
+	}
 	camera->setTop(glm::scale(camera->getTop(), scale));
+	if(itemType != 1)
 	camera->setTop(glm::rotate(camera->getTop(), float(rot * DEG_TO_RADIAN), rotDegree));
 	camera->setTop(glm::translate(camera->getTop(), pos));
 	rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
+	if(itemType == 0)
 	cube->draw();
+	if(itemType == 1)
+	rt3d::drawMesh(meshObjects[2], mVertCount, GL_TRIANGLES);
+
 	camera->pop();
 }
 
@@ -492,47 +501,19 @@ void Game::renderHouse()
 	//front left hand side of house
 	glBindTexture(GL_TEXTURE_2D, textures[2]); //house wall texture
 	drawItem(glm::vec3(0.0, 0.3, -6.5 / 0.1), glm::vec3(4.0, 1.0, 0.1));
+
+	//front right hand side of house
+	drawItem(glm::vec3(9.5/3.5, 0.3, -6.5 / 0.1), glm::vec3(3.5, 1.0, 0.1));
+
+	//top of the front of the house
+	drawItem(glm::vec3(0.525, 2.3, -6.5 / 0.1), glm::vec3(8.5, 1.0, 0.1));
+
+	//beds
+	glBindTexture(GL_TEXTURE_2D, textures[0]);
+	drawItem(glm::vec3(5.125f, -4000.2f, -70.0f), glm::vec3(0.00575f, 0.005f, 0.01f), 0, glm::vec3(0.0, 0.0, 0.0), 1);
+	drawItem(glm::vec3(-1700.0f + 0.125, -4000.2f, -70.0f), glm::vec3(0.00575f, 0.005f, 0.01f), 0, glm::vec3(0.0, 0.0, 0.0), 1);
 	}
-//
-//	//draw bed objects
-//	{
-//		rt3d::setMaterial(mvpShaderProgram, materialDark->getMaterial());
-//		glBindTexture(GL_TEXTURE_2D, textures[0]);
-//
-//		camera->pushBack(camera->getTop());
-//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-//		camera->setTop(glm::rotate(camera->getTop(), float(180 * DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
-//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.00575f, 0.005f, 0.01f)));
-//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(5.0f + 0.125, -4000.2f, -70.0f)));
-//
-//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//		rt3d::drawMesh(meshObjects[2], mVertCount, GL_TRIANGLES);
-//		camera->pop();
-//
-//		camera->pushBack(camera->getTop());
-//		camera->setTop(glm::rotate(camera->getTop(), float(90 * DEG_TO_RADIAN), glm::vec3(1.0f, 0.0f, 0.0f)));
-//		camera->setTop(glm::rotate(camera->getTop(), float(180 * DEG_TO_RADIAN), glm::vec3(0.0f, 1.0f, 0.0f)));
-//		camera->setTop(glm::scale(camera->getTop(), glm::vec3(0.00575f, 0.005f, 0.01f)));
-//		camera->setTop(glm::translate(camera->getTop(), glm::vec3(-1700.0f + 0.125, -4000.2f, -70.0f)));
-//
-//		rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//		rt3d::drawMesh(meshObjects[2], mVertCount, GL_TRIANGLES);
-//		camera->pop();
-//
-//	}
-//
-//	//front of house, right hand side
-//	glBindTexture(GL_TEXTURE_2D, textures[2]);
-//	for (int a = 3; a < 5; a++) {
-//		for (int b = 0; b < 10; b++) {
-//			camera->pushBack(camera->getTop());
-//			camera->setTop(glm::scale(camera->getTop(), glm::vec3(1.275f, 0.2f, 0.1f)));
-//			camera->setTop(glm::translate(camera->getTop(), glm::vec3(a * 2.0f - 0.275, b*1.2f, -70.0f)));
-//			rt3d::setUniformMatrix4fv(mvpShaderProgram, "modelview", glm::value_ptr(camera->getTop()));
-//			cube->draw();
-//			camera->pop();
-//		}
-//	}
+
 //
 //	//front of house, top side
 //	for (int a = 0; a < 5; a++) {

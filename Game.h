@@ -54,6 +54,10 @@ public:
 
 	void update(); // update function
 
+	float getPenetrationDepth(CollisionEntity* c1, CollisionEntity* c2, int dir);
+
+	void movePlayer(glm::vec3 newPos);
+
 	void init(void); // game initialisation
 
 	virtual ~Game()
@@ -86,7 +90,7 @@ public:
 
 	void hideCoin(int position); // hides coin from view and disables collision
 
-	void drawItem(glm::vec3 pos, glm::vec3 scale, float rotation = 0.0f, glm::vec3 rotDegree = glm::vec3 (1.0f, 1.0f, 1.0f), int itemType = 0);
+	void drawItem(glm::vec3 pos, glm::vec3 scale, float rotation = 0.0f, glm::vec3 rotDegree = glm::vec3 (1.0f, 1.0f, 1.0f), int itemType = 0, bool hasCollision = true);
 	
 	void setCollider(glm::vec3 pos, glm::vec3 scale, bool condition = false);
 

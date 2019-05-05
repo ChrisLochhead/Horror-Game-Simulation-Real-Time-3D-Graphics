@@ -56,8 +56,8 @@ int main(int argc, char *argv[]) {
 			if (sdlEvent.type == SDL_QUIT)
 				running = false;
 		}
+		game->render();
 		game->update();
-		game->render(); // call the draw function
 	}
 	BASS_Free();
 	SDL_GL_DeleteContext(glContext);
